@@ -1,7 +1,7 @@
 //go:build generate
 // +build generate
 
-package xrds-public-private
+package xxx
 
 /*
 // Generate Composite Resources

@@ -1,7 +1,8 @@
-compositionIdentifier: example.cloud
+compositionIdentifier: company.internal
 provider:
-  baseURL: https://raw.githubusercontent.com/crossplane-contrib/%s/%s/package/crds/%s
-  name: provider-aws
+  baseURL: https://raw.githubusercontent.com/haarchri/%s/%s/package/crds/%s
+  name: xrds-public-private
+  version: main
 labels:
   fromCRD:
   - example-company/psp-element

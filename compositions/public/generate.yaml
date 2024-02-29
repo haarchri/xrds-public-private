@@ -1,0 +1,16 @@
+group: aws.company.intern
+name: Network
+version: v1alpha1
+provider:
+  crd:
+    file: aws.platform.upbound.io_xnetworks.yaml
+    version: v1alpha1
+ignore: false
+overrideFields:
+  - path: spec.parameters.region
+    value: "us-west-2"
+    ignore: true
+compositions:
+  - name: xnetwork.aws.company.intern
+    provider: privatecomposition
+    default: true
