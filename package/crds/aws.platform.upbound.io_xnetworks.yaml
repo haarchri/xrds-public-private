@@ -1,0 +1,234 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  creationTimestamp: null
+  name: xnetworks.aws.platform.upbound.io
+spec:
+  group: aws.platform.upbound.io
+  names:
+    categories:
+    - composite
+    kind: XNetwork
+    plural: xnetworks
+  scope: Cluster
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=='Synced')].status
+      name: SYNCED
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
+      type: string
+    - jsonPath: .spec.compositionRef.name
+      name: COMPOSITION
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            type: string
+          kind:
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              claimRef:
+                properties:
+                  apiVersion:
+                    type: string
+                  kind:
+                    type: string
+                  name:
+                    type: string
+                  namespace:
+                    type: string
+                required:
+                - apiVersion
+                - kind
+                - namespace
+                - name
+                type: object
+              compositionRef:
+                properties:
+                  name:
+                    type: string
+                required:
+                - name
+                type: object
+              compositionRevisionRef:
+                description: 'Alpha: This field may be deprecated or changed without
+                  notice.'
+                properties:
+                  name:
+                    type: string
+                required:
+                - name
+                type: object
+              compositionSelector:
+                properties:
+                  matchLabels:
+                    additionalProperties:
+                      type: string
+                    type: object
+                required:
+                - matchLabels
+                type: object
+              compositionUpdatePolicy:
+                default: Automatic
+                description: 'Alpha: This field may be deprecated or changed without
+                  notice.'
+                enum:
+                - Automatic
+                - Manual
+                type: string
+              parameters:
+                description: Network Parameters
+                properties:
+                  deletionPolicy:
+                    default: Delete
+                    description: Delete the external resources when the Claim/XR is
+                      deleted. Defaults to Delete
+                    enum:
+                    - Delete
+                    - Orphan
+                    type: string
+                  id:
+                    description: ID of this Network that other objects will use to
+                      refer to it.
+                    type: string
+                  providerConfigName:
+                    default: default
+                    description: Crossplane ProviderConfig to use for provisioning
+                      this resources
+                    type: string
+                  region:
+                    description: Region is the region you'd like your resource to
+                      be created in.
+                    type: string
+                required:
+                - deletionPolicy
+                - providerConfigName
+                - id
+                - region
+                type: object
+              publishConnectionDetailsTo:
+                properties:
+                  configRef:
+                    default:
+                      name: default
+                    properties:
+                      name:
+                        type: string
+                    type: object
+                  metadata:
+                    properties:
+                      annotations:
+                        additionalProperties:
+                          type: string
+                        type: object
+                      labels:
+                        additionalProperties:
+                          type: string
+                        type: object
+                      type:
+                        type: string
+                    type: object
+                  name:
+                    type: string
+                required:
+                - name
+                type: object
+              resourceRefs:
+                items:
+                  properties:
+                    apiVersion:
+                      type: string
+                    kind:
+                      type: string
+                    name:
+                      type: string
+                  required:
+                  - apiVersion
+                  - kind
+                  type: object
+                type: array
+              writeConnectionSecretToRef:
+                properties:
+                  name:
+                    type: string
+                  namespace:
+                    type: string
+                required:
+                - name
+                - namespace
+                type: object
+            required:
+            - parameters
+            type: object
+          status:
+            properties:
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      format: date-time
+                      type: string
+                    message:
+                      type: string
+                    reason:
+                      type: string
+                    status:
+                      type: string
+                    type:
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+              connectionDetails:
+                properties:
+                  lastPublishedTime:
+                    format: date-time
+                    type: string
+                type: object
+              privateSubnetIds:
+                items:
+                  type: string
+                type: array
+              publicSubnetIds:
+                items:
+                  type: string
+                type: array
+              securityGroupIds:
+                items:
+                  type: string
+                type: array
+              subnetIds:
+                items:
+                  type: string
+                type: array
+              vpcId:
+                type: string
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: null
+  storedVersions: null

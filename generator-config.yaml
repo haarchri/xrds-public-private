@@ -1,0 +1,10 @@
+compositionIdentifier: example.cloud
+provider:
+  baseURL: https://raw.githubusercontent.com/crossplane-contrib/%s/%s/package/crds/%s
+  name: provider-aws
+labels:
+  fromCRD:
+  - example-company/psp-element
+tags:
+  fromLabels:
+  - example-company/psp-element
